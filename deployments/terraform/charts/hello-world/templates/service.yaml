@@ -3,13 +3,14 @@ kind: Service
 metadata:
   name: {{ include "hello-world.fullname" . }}
   labels:
-    {{- include "hello-world.labels" . | nindent 4 }}
+{{ include "hello-world.labels" . | indent 4 }}
 spec:
   type: {{ .Values.service.type }}
   ports:
     - port: {{ .Values.service.port }}
       targetPort: 5000
       protocol: TCP
-      name: flask-prot
+      name: http
   selector:
-    {{- include "hello-world.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/name: {{ include "hello-world.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
